@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   mysql:
     container_name: mysql
     image: mysql:8
@@ -23,6 +24,16 @@ services:
       retries: 5
       start_period: 10s
       timeout: 5s
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-microservice
 
   account_service:
     build:
