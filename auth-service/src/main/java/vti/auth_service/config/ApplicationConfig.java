@@ -17,8 +17,21 @@ import vti.auth_service.user.repo.UserRepository;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
+    private final UserRepository repository;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        log.info("Create bean authentication manager");
+        return config.getAuthenticationManager();
+    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found by username"));
     }
 }

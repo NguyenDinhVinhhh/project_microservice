@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vti.auth_service.dto.reponse.AuthenticationResponseDTO;
 import vti.auth_service.dto.reponse.RegisterResponseDTO;
+import vti.auth_service.dto.request.LoginRequestDTO;
 import vti.auth_service.dto.request.RegisterRequestDTO;
 import vti.auth_service.services.AuthenticationService;
 
@@ -27,8 +29,12 @@ public class AuthenticationController {
     }
 
 
-    public ResponseEntity<?> login(){
-            return null;
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        AuthenticationResponseDTO responseDTO = authenticationService.login(loginRequestDTO);
+        return ResponseEntity
+                .status(responseDTO.getStatus())
+                .body(responseDTO);
     }
 
 
