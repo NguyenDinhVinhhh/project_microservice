@@ -16,6 +16,7 @@ import vti.api_gateway.services.JwtService;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class AuthenticationFilter implements GatewayFilter {
     public static final String AUTH_HEADER_KEY = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer";
