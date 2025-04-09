@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>vti</groupId>
-	<artifactId>account-service</artifactId>
+	<artifactId>account_service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>account-service</name>
+	<name>account_service</name>
 	<description>Account Service</description>
 	<url/>
 	<licenses>
@@ -43,10 +43,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-config</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>

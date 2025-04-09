@@ -2,6 +2,17 @@ version: '3.8'
 
 services:
 
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-microservice
+
   mysql:
     container_name: mysql
     image: mysql:8
@@ -24,17 +35,25 @@ services:
       retries: 5
       start_period: 10s
       timeout: 5s
-  eureka-server:
-    container_name: eureka-server
+
+  auth-service:
+    container_name: auth-service
     build:
-      context: ./eureka-server
+      context: ./auth-service
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "8761:8761"
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - eureka-server
     networks:
       - spring-microservice
-
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/microservice?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimeZone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_APPLICATION_NAME: auth-service
 
   account_service:
     build:
@@ -46,8 +65,8 @@ services:
     networks:
       - spring-microservice
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
+      - eureka-server
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimeZone=UTC
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
@@ -64,8 +83,8 @@ services:
     networks:
       - spring-microservice
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
+      - eureka-server
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimeZone=UTC
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
