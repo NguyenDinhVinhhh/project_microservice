@@ -10,6 +10,7 @@ import vti.auth_service.dto.reponse.AuthenticationResponseDTO;
 import vti.auth_service.dto.reponse.RegisterResponseDTO;
 import vti.auth_service.dto.request.LoginRequestDTO;
 import vti.auth_service.dto.request.RegisterRequestDTO;
+import vti.auth_service.exception.CustomException;
 import vti.auth_service.services.AuthenticationService;
 
 @Slf4j
@@ -35,6 +36,11 @@ public class AuthenticationController {
         return ResponseEntity
                 .status(responseDTO.getStatus())
                 .body(responseDTO);
+    }
+
+    @PostMapping("/refresh-token")
+    public Object refreshToken(@RequestHeader("Authorization") String authHeader) throws CustomException {
+        return authenticationService.refreshToken(authHeader);
     }
 
 
